@@ -1,0 +1,12 @@
+version: "3"
+services: 
+  nginx:
+    ports: 
+      - "80:80"
+  needle-blog:
+    build: .
+    scale: 2
+    environment: 
+      - NODE_ENV=production
+    command: 
+      sh ./start.sh
