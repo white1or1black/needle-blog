@@ -9,12 +9,6 @@ RUN if [ "$NODE_ENV" = "development" ]; \
     fi
 
 COPY . ./
-RUN npm run build
-
-# WORKDIR /app/frontend
-# RUN npm install --dev
-# RUN npm run build --force
-# WORKDIR /app
 
 ENV PORT=3000
 EXPOSE $PORT

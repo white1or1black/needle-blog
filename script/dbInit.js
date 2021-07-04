@@ -62,10 +62,11 @@ async function main() {
     await connection.execute(sql);
 
     await connection.end();
-    process.exit(0);
   } catch(err) {
     console.log(err);
   }
+
+  process.exit(0);
 }
 
 main();
