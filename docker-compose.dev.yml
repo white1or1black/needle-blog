@@ -1,5 +1,8 @@
 version: "3"
 services: 
+  mysql:
+    ports:
+      - '3308:3306'
   nginx:
     ports: 
       - "3000:80"
@@ -8,4 +11,4 @@ services:
     environment: 
       - NODE_ENV=development
     command: 
-      npm run start:dev
+      sh ./start.sh

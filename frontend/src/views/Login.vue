@@ -4,7 +4,7 @@
     Login and manage your blogs.
   </div>
   <div class="input-item"> <span> name: </span><input type="text" v-model="username"> </div>
-  <div class="input-item"> <span> password: </span> <input type="text" v-model="password"> </div>
+  <div class="input-item"> <span> password: </span> <input type="password" v-model="password"> </div>
   <div class="input-item login-submit"> <input type="button" value="login" @click="login"></div>
 </div>
 </template>

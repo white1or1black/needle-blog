@@ -1,11 +1,11 @@
 <template>
 <div class="main">
   <div class="blog-list">
-    <input type="button" value="add new blog" @click="addPage">
+    <input type="button" value="add new blog" @click="addPage" v-if="isLogin">
     <Blogs :blogs="blogs" @chagepage="changePage" />
   </div>
   <div class="page">
-    <div class="op-edit" v-if="pageId">
+    <div class="op-edit" v-if="pageId && isLogin">
       <input type="button" value="edit" @click="editPage">
       <input type="button" value="delete" @click="delPage">
     </div>
@@ -33,10 +33,13 @@ export default {
       title: '',
       content: '',
       blogs: [],
+      isLogin: false,
     }
   },
+  computed: {},
   mounted() {
     this.blogList();
+    this.isLogin = localStorage.getItem('token');
   },
   methods: {
     checkAuth(cb) {
