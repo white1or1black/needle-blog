@@ -1,8 +1,5 @@
 version: "3"
 services: 
-  mysql:
-    ports:
-      - '3308:3306'
   nginx:
     ports: 
       - "3000:80"

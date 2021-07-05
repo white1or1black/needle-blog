@@ -5,7 +5,7 @@ const path = require('path');
 const bcrypt = require('bcryptjs');
 
 
-const dbName = 'needle_blog';
+const dbName = process.env.MYSQL_DB;
 const initUsername = 'admin';
 const initPassword = '123456';
 

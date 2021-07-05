@@ -5,6 +5,9 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST}
+      MYSQL_DATABASE: ${MYSQL_DB}
+      MYSQL_USER: ${MYSQL_USERNAME}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - "${MYSQL_DIR}/data:/var/lib/mysql"
       - "${MYSQL_DIR}/config:/etc/mysql/conf.d"
@@ -20,6 +23,7 @@ services:
     build: .
     depends_on: 
       - mysql
+    restart: always
     volumes: 
       - ./:/app
       - /app/node_modules
