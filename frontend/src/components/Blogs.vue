@@ -1,10 +1,10 @@
 <template>
-<div>
+<div class="blog-list">
   <ul>
     <div v-for="(item, idx) in blogs">
       <li class="page-link">
         <div @click="jumpTo(item.id)" class="page-title">
-          {{item.title}}
+          {{item.title | titleFilter}}
         </div>
         <div class="page-uptime">
           {{ item.updatedAt | dateFilter }}
@@ -26,8 +26,15 @@ export default {
     return {};
   },
   filters: {
+    titleFilter: function(title) {
+      const showLen = 7;
+      if (title && title.length > showLen) {
+        return title.substr(0, showLen) + ' ...';
+      }
+      return title;
+    },
     dateFilter: function(d) {
-      return new Date(d).toLocaleString('en');
+      return new Date(d).toLocaleString('en').split(',')[0];
     }
   },
   mounted() {},
@@ -40,18 +47,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.page-link {
-  margin-top: 1%;
-  .page-title {
-    cursor: pointer;
-    color: #8181e7;
-    font-size: 2rem;
-    font-style: oblique;
-  }
 
-  .page-uptime {
-    font-size: 1rem;
-    color:#8181e7;
+.blog-list {
+  height: 86%;
+  overflow: scroll;
+  .page-link {
+    margin-top: 1%;
+    .page-title {
+      cursor: pointer;
+      color: #8181e7;
+      font-size: 2rem;
+      font-style: oblique;
+    }
+
+    .page-uptime {
+      font-size: 1rem;
+      color:#8181e7;
+    }
   }
 }
 

@@ -1,7 +1,7 @@
 module.exports = {
   publicPath: '/',
   outputDir: process.env.VUE_APP_FLAG,
-  assetsDir: "static",
+  assetsDir: "assets",
   productionSourceMap: false,
   filenameHashing: false,
   lintOnSave: true,

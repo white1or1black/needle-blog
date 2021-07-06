@@ -1,6 +1,6 @@
 <template>
 <div>
-  <textarea class="edit-area" v-model="content" />
+  <textarea class="edit-area" v-model="ct" />
 </div>
 </template>
 <script>
@@ -10,14 +10,20 @@ export default {
     content: String
   },
   data() {
-    return {};
+    return {
+      ct: '',
+    };
   },
   watch: {
     content: function(nVal) {
+      this.ct = this.content;
+    },
+    ct: function(nVal) {
       this.$emit('ctchange', nVal);
     }
   },
   computed: {},
+  created() {},
   mounted() {},
   methods: {}
 }

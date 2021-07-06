@@ -88,22 +88,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/variables.scss';
+
 .main {
   .editor, .viewer {
-    height: 100%;
+    height: 97%;
     width: 50%;
     position: fixed;
     z-index: 1;
     top: 0;
-    overflow-x: hidden;
+    overflow-x: scroll;
     padding-top: 20px;
   }
-
   .editor {
     left: 0;
-    background: #8383e7;
-    width: 50rem;
-    height: 60rem;
+    background: $edit-main-theme;
+    width: 45rem;
+    height: 50rem;
 
     .edit-header {
       display: grid;
@@ -125,16 +126,16 @@ export default {
         font-size: 1rem;
       }
       .content-area {
-        height: 100%;
+        height: 98%;
         width: 88%;
       }
     }
-
   }
   .viewer {
     right: 0;
     padding-left: 1%;
-    background: #c51b1b;
+    margin-top: 2%;
+    background: $edit-main-theme;
   }
 }
 

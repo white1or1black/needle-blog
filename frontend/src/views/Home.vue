@@ -107,6 +107,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/variables';
+
 .main {
   display: flex;
 
@@ -118,7 +120,7 @@ export default {
     width: 65rem;
     height: 50rem;
     overflow: scroll;
-    background: #e7dfdf;
+    background: $main-bg-theme;
     margin-left: 2%;
     .op-edit {
       margin: 1%;
