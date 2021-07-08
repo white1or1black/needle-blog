@@ -2,7 +2,12 @@ import { JwtAuthGuard } from './../auth/jwt-auth.guard';
 import { PageEntity } from './page.entity';
 import { AddPageDto, PageDto, CheckPageDto, UpdatePageDto } from './page.dto';
 import { PageService } from './page.service';
-import { Body, Controller, Post, Get, Put, Delete, Query, UseGuards } from "@nestjs/common";
+import { Express } from 'express';
+import { diskStorage } from 'multer';
+import { extname, join } from 'path';
+import { Request, Res, Body, Controller, Post, Get, Put, Delete, Query, UseGuards, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { FileInterceptor } from '@nestjs/platform-express';
+import * as fs from 'fs';
 
 @Controller('page')
 export class PageController {
@@ -32,5 +37,26 @@ export class PageController {
   async delPage(@Body() body, @Query() query): Promise<boolean> {
     await this.pageService.delPage(body.pageId);
     return true;
+  }
+
+  @UseInterceptors(FileInterceptor('file', {
+  storage: diskStorage({
+    destination: './uploads'
+    , filename: (req, file, cb) => {
+      const randomName = Array(32).fill(null).map(() => (Math.round(Math.random() * 16)).toString(16)).join('')
+      cb(null, `${randomName}${extname(file.originalname)}`)
+    }
+  })
+}))
+  @Post('upload')
+  async upload(@UploadedFile() file: Express.Multer.File): Promise<any> {
+    return file.filename;
+  }
+  @Get('uploads/*')
+  async uploadedFile(@Request() req, @Res() res): Promise<any> {
+    const pathArr: string[] = req.originalUrl.split('/');
+    const filename: string = pathArr[pathArr.length - 1];
+    const uploadDir = join('./uploads');
+    return fs.createReadStream(join(uploadDir, filename)).pipe(res);
   }
 }

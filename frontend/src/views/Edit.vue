@@ -8,7 +8,7 @@
         <input type="button" @click="submit" value="submit">
       </div>
     </div>
-    <div class="edit-content"> <span class="content-label"> content: </span>
+    <div class="edit-content"> <span class="content-label"></span>
       <Editor class="content-area" :content="content" @ctchange="ctchange" />
     </div>
   </div>
@@ -134,7 +134,7 @@ export default {
   .viewer {
     right: 0;
     padding-left: 1%;
-    margin-top: 2%;
+    padding-top: 5%;
     background: $edit-main-theme;
   }
 }

@@ -1,9 +1,15 @@
 <template>
 <div>
-  <textarea class="edit-area" v-model="ct" />
+  <div>
+    <input style="display: none" type="file" ref="image" @change="uploadFile"/>
+    <input type="button" @click="addImg" value="add image">
+  </div>
+  <textarea ref="inputArea" class="edit-area" v-model="ct" />
 </div>
 </template>
 <script>
+import axios from '../assets/js/axios';
+
 export default {
   name: 'Editor',
   props: {
@@ -25,7 +31,38 @@ export default {
   computed: {},
   created() {},
   mounted() {},
-  methods: {}
+  methods: {
+    addImg() {
+      this.$refs.image.click();
+    },
+    uploadFile() {
+      const imgFile = this.$refs.image.files[0];
+      if (!imgFile) {
+        alert('no file choosed!');
+        return;
+      }
+      const fileFormData = new FormData();
+      fileFormData.append('file', imgFile);
+
+      axios.post('/page/upload', fileFormData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      }).then(res => {
+        const url = 'page/uploads/';
+        if (res.data) {
+          this.$refs.image.type = 'text';
+          this.$refs.image.type = 'file';
+          this.insertContent(`<img src="${url}${res.data}" width="200" />`);
+        }
+      }).catch(err => {
+        alert(err.message);
+      });
+    },
+    insertContent(nVal) {
+      const inArea = this.$refs.inputArea;
+      const curPos = inArea.selectionStart;
+      this.ct = this.ct.slice(0, curPos) + nVal + this.ct.slice(curPos);
+    }
+  }
 }
 </script>
 

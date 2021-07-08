@@ -6,3 +6,4 @@ Dockerfile
 .dockerignore
 docker-compose*
 db_data
+uploads
