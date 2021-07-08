@@ -9,7 +9,6 @@ RUN if [ "$NODE_ENV" = "development" ]; \
     fi
 
 COPY . ./
-RUN npm run build
 
 ENV PORT=3000
 EXPOSE $PORT
