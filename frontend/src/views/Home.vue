@@ -48,10 +48,7 @@ export default {
   computed: {},
   mounted() {
     this.blogList();
-    this.checkAuth(() => {
-      this.isLogin = true;
-      this.username = localStorage.getItem('username');
-    });
+    this.isLogin = this.username = localStorage.getItem('username');
   },
   methods: {
     checkAuth(cb) {
