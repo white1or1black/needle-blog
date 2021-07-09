@@ -16,6 +16,14 @@
       <MarkdownViewer :content="content" />
     </div>
   </div>
+  <div>
+    <div class="login-block" v-if="isLogin">
+      <span class="username"> {{ username + "\'s blog" }} </span>
+    </div>
+    <div class="login-block" v-else>
+      <input type="button" value="login" @click="$routeJumpByName('Login')">
+    </div>
+  </div>
 </div>
   
 </template>
@@ -34,12 +42,16 @@ export default {
       content: '',
       blogs: [],
       isLogin: false,
+      username: '',
     }
   },
   computed: {},
   mounted() {
     this.blogList();
-    this.isLogin = localStorage.getItem('token');
+    this.checkAuth(() => {
+      this.isLogin = true;
+      this.username = localStorage.getItem('username');
+    });
   },
   methods: {
     checkAuth(cb) {
@@ -131,6 +143,16 @@ export default {
     }
     .blog-content {
       margin: 0 2%;
+    }
+  }
+
+  .login-block {
+    width: 8rem;
+    text-align: center;
+    background: #cceb85;
+    border-radius: 30%;
+    .username {
+      color: rebeccapurple;
     }
   }
 }

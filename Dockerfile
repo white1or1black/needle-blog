@@ -4,8 +4,8 @@ COPY package.json package-lock.json ./
 
 ARG NODE_ENV
 RUN if [ "$NODE_ENV" = "development" ]; \
-      then npm install --registry https://registry.npm.taobao.org; \
-      else npm install --only=production --registry https://registry.npm.taobao.org; \
+      then npm install; \
+      else npm install --only=production; \
     fi
 
 COPY . ./

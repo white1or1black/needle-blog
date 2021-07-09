@@ -11,6 +11,7 @@ export class AuthService {
 
   async login(user: object): Promise<object> {
     return {
+      username: user['username'],
       token: this.jwtService.sign({...user})
     };
   }
