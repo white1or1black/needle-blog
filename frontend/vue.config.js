@@ -19,10 +19,10 @@ module.exports = {
   css: {
     loaderOptions: {
       sass: {
-        additionalData: `@import "@/assets/variables.scss";`
+        additionalData: `@import "@/assets/css/variables.scss";`
       },
       scss: {
-        additionalData: `@import "@/assets/variables.scss";`
+        additionalData: `@import "@/assets/css/variables.scss";`
       },
       less: {
         globalVars: {

@@ -24,13 +24,14 @@
 import MarkdownViewer from '../components/MarkdownViewer';
 import Editor from '../components/Editor';
 import axios from '../assets/js/axios';
+import variables from '../assets/js/variables';
 
 export default {
   name: 'Edit',
   components: { MarkdownViewer, Editor },
   data() {
     return {
-      mode: 1, // 1 add, 2 edit
+      mode: variables.EDITOR_MODE_ADD,
       pageId: null,
       title: '',
       content: '',
@@ -88,7 +89,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/variables.scss';
+@import '../assets/css/variables';
 
 .main {
   .editor, .viewer {

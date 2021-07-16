@@ -1,13 +1,16 @@
 <template>
 <div class="blog-list">
-  <ul>
+  <ul style="list-style-type:none;">
     <div v-for="(item, idx) in blogs">
       <li class="page-link">
-        <div @click="jumpTo(item.id)" class="page-title">
+        <div @click="goArticle(idx)" class="page-title">
           {{item.title | titleFilter}}
         </div>
         <div class="page-uptime">
           {{ item.updatedAt | dateFilter }}
+        </div>
+        <div class="page-brief">
+          <MarkdownViewer :content="item.content | contentFilter" />
         </div>
       </li>
     </div>
@@ -17,17 +20,21 @@
 
 <script>
 import axios from '../assets/js/axios';
+import MarkdownViewer from './MarkdownViewer';
+import variables from '../assets/js/variables';
+
 export default {
   name: 'Blogs',
   props: {
     blogs: Array,
   },
+  components: { MarkdownViewer },
   data() {
     return {};
   },
   filters: {
     titleFilter: function(title) {
-      const showLen = 7;
+      const showLen = 100;
       if (title && title.length > showLen) {
         return title.substr(0, showLen) + ' ...';
       }
@@ -35,13 +42,21 @@ export default {
     },
     dateFilter: function(d) {
       return new Date(d).toLocaleString('en').split(',')[0];
+    },
+    contentFilter: function(cont) {
+      let idx = cont.indexOf('\n');
+      idx = idx > 0? idx: 0;
+      return cont.substr(idx, idx + 100);
     }
   },
   mounted() {},
   methods: {
-    jumpTo(pageId) {
-      this.$emit('chagepage', pageId);
-    },
+    goArticle(idx) {
+      const curBlog = this.blogs[idx];
+      if (curBlog)
+        localStorage.setItem(variables.CUR_BLOG_INFO, JSON.stringify(curBlog));
+      this.$router.push({name: 'Article', query: { id: curBlog.id }});
+    }
   }
 }
 </script>
@@ -50,7 +65,6 @@ export default {
 
 .blog-list {
   height: 86%;
-  overflow: scroll;
   .page-link {
     margin-top: 1%;
     .page-title {
@@ -59,10 +73,12 @@ export default {
       font-size: 2rem;
       font-style: oblique;
     }
-
     .page-uptime {
       font-size: 1rem;
-      color:#8181e7;
+    }
+    .page-brief {
+      font-size: 10px !important;
+      background: #f4f4f8;
     }
   }
 }

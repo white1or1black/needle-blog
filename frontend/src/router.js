@@ -1,8 +1,9 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Edit from '@/views/Edit';
-import Home from '@/views/Home';
 import Login from '@/views/Login';
+import BlogList from '@/views/BlogList';
+import Article from '@/views/Article';
 
 Vue.use(Router)
 export default new Router({
@@ -10,12 +11,26 @@ export default new Router({
     {
       path: '/',
       name: 'Home',
-      component: Home,
+      component: BlogList,
       meta: {
         title: 'Needle\' home'
       }
     }, {
-      path: '/Login',
+      path: '/blogs',
+      name: 'BlogList',
+      component: BlogList,
+      meta: {
+        title: 'blog list'
+      }
+    }, {
+      path: '/article',
+      name: 'Article',
+      component: Article,
+      meta: {
+        title: 'Article'
+      }
+    }, {
+      path: '/login',
       name: 'Login',
       component: Login,
       meta: {
