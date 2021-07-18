@@ -20,6 +20,12 @@ then
 elif [ $option == 'stop' ]
 then
     docker-compose stop $appName
+elif [ $option == 'produp' ]
+then
+    docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+elif [ $option == 'devup' ]
+then
+    docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 elif [ $option == 'down' ]
 then
     docker-compose down
