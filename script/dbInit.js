@@ -76,7 +76,7 @@ async function initDb() {
   const config = {
     host: process.env.MYSQL_HOST,
     port: parseInt(process.env.MYSQL_PORT) || 3306,
-    database: 'mysql',
+    database: dbName,
     user: 'root',
     password: process.env.MYSQL_ROOT_PASSWORD,
   };
@@ -85,15 +85,6 @@ async function initDb() {
 
   try {
     let connection = await mysql.createConnection(config); 
-
-    const [ rows ] = await connection.query(`select SCHEMA_NAME  from INFORMATION_SCHEMA.SCHEMATA where SCHEMA_NAME='${dbName}';`);
-    if(rows.length > 0) throw new Error(`database ${dbName} already exists`);
-
-    await connection.execute(`create database ${dbName};`);
-
-    config.database = dbName;
-    config.user = process.env.MYSQL_USERNAME;
-    config.password = process.env.MYSQL_PASSWORD;
     connection = await mysql.createConnection(config);
 
     const sqlPath = path.join(__dirname, '../sql/');

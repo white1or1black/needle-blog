@@ -7,5 +7,4 @@ services:
     build: .
     environment: 
       - NODE_ENV=production
-    command: 
-      npm run start:prod
+    command: sh -c "node ./script/dbInit.js && npm run start:prod"
