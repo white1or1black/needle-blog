@@ -93,6 +93,7 @@ export default {
   }
   .page {
     width: 65rem;
+    min-height: 49rem;
     background: $main-bg-theme;
     margin: auto;
     margin-bottom: 2%;
