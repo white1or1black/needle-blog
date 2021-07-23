@@ -1,0 +1,27 @@
+datasource db {
+  provider = "mysql"
+  url = env("MYSQL_DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  @@map("user")
+  id Int @default(autoincrement()) @id
+  username String @unique
+  password String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+}
+
+model Page {
+  @@map("page")
+  id Int @default(autoincrement()) @id
+  title String
+  content String
+  status Int @default(0)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+}

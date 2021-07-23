@@ -1,3 +1,4 @@
+import { PrismaModule } from './prisma/prisma.module';
 import { join } from 'path';
 import { PageEntity } from './page/page.entity';
 import { PageModule } from './page/page.module';
@@ -10,9 +11,6 @@ import { ServeStaticModule} from '@nestjs/serve-static'; // New
 
 @Module({
   imports: [
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'frontend', 'dist')
-    }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.MYSQL_HOST,
@@ -23,9 +21,13 @@ import { ServeStaticModule} from '@nestjs/serve-static'; // New
       entities: [UserEntity, PageEntity],
       synchronize: false
     }),
+    PrismaModule,
     UserModule,
     AuthModule,
-    PageModule
+    PageModule,
+    // ServeStaticModule.forRoot({
+    //   rootPath: join(__dirname, '..', 'frontend', 'dist')
+    // }),
   ],
   controllers: [],
   providers: [],

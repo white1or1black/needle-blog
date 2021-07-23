@@ -1,7 +1,7 @@
 #!/bin/sh
 
 option=$1
-appName='needle-blog'
+appName=$2
 if [ ! $option ]
 then
     option='-'

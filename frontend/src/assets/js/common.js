@@ -2,7 +2,7 @@ import variables from "./variables";
 import axios from './axios';
 
 export function checkAuth(pageId, cb) {
-  axios.get('/auth/check', {pageId}).then(res => {
+  axios.get(`/auth/check`).then(res => {
     if (res.data === 'success')
       cb();
   }).catch(err => {

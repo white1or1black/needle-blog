@@ -55,7 +55,7 @@ export default {
       const curBlog = this.blogs[idx];
       if (curBlog)
         localStorage.setItem(variables.CUR_BLOG_INFO, JSON.stringify(curBlog));
-      this.$router.push({name: 'Article', query: { id: curBlog.id }});
+      this.$router.push({name: 'Article', params: { id: curBlog.id }});
     }
   }
 }

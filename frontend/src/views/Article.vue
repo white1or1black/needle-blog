@@ -40,11 +40,12 @@ export default {
   computed: {},
   mounted() {
     this.isLogin = checkLogin();
-    const curBlog = localStorage.getItem(variables.CUR_BLOG_INFO);
-    if (!this.curBlog) {
-      this.pageId = this.$route.query.id;
+    let curBlog = localStorage.getItem(variables.CUR_BLOG_INFO);
+    if (!curBlog) {
+      this.pageId = this.$route.params.id;
       this.getBlog();
     } else {
+      curBlog = JSON.parse(curBlog);
       this.pageId = curBlog.id;
       this.title = curBlog.title;
       this.content = curBlog.content;
@@ -52,9 +53,7 @@ export default {
   },
   methods: {
     delPage() {
-      axios.delete('/page/del', {
-        data: { pageId: this.pageId }
-      }).then(res => {
+      axios.delete(`/page/del/${this.pageId}`).then(res => {
         this.$router.push({name: 'Home'});
       }).catch(err => {
         alert(err.message);
@@ -62,7 +61,7 @@ export default {
     },
     editPage() {
       checkAuth(this.pageId, () => {
-        this.$router.push({name: 'Edit', query: { mode: variables.EDITOR_MODE_EDIT, pageId: this.pageId }});
+        this.$router.push({name: 'Edit', params: { id: this.pageId }});
       });
     },
     getBlog() {
@@ -70,7 +69,7 @@ export default {
         alert(`invalid article id: ${this.pageId}`);
         return;
       }
-      axios.get(`/page/get?id=${this.pageId}`).then(res => {
+      axios.get(`/page/get/${this.pageId}`).then(res => {
         if (res.data instanceof Array && res.data.length > 0) {
           const data = res.data[0];
           document.title = data.title;
@@ -94,10 +93,9 @@ export default {
   }
   .page {
     width: 65rem;
-    height: 50rem;
-    overflow: scroll;
     background: $main-bg-theme;
-    margin-left: 2%;
+    margin: auto;
+    margin-bottom: 2%;
     .op-edit {
       margin: 1%;
     }

@@ -1,12 +1,13 @@
-import Vue from "vue";
-import Router from "vue-router";
+import Vue from 'vue';
+import VueRouter from "vue-router";
 import Edit from '@/views/Edit';
 import Login from '@/views/Login';
 import BlogList from '@/views/BlogList';
 import Article from '@/views/Article';
 
-Vue.use(Router)
-export default new Router({
+Vue.use(VueRouter);
+
+const routes = {
   mode: 'history',
   routes: [
     {
@@ -24,7 +25,7 @@ export default new Router({
         title: 'blog list'
       }
     }, {
-      path: '/article',
+      path: '/article/:id',
       name: 'Article',
       component: Article,
       meta: {
@@ -38,14 +39,15 @@ export default new Router({
         title: 'Login'
       }
     }, {
-      path: '/edit',
+      path: '/edit/:id',
       name: 'Edit',
       component: Edit,
       meta: {
         title: 'Edit your blog'
       }
-      
     }
   ]
+};
 
-})
+const router = new VueRouter(routes);
+export default router;

@@ -44,8 +44,8 @@ export default {
   },
   methods: {
     init() {
-      this.mode = this.$route.query.mode;
-      this.pageId = this.$route.query.pageId;
+      this.pageId = this.$route.params.id;
+      this.mode = this.pageId? variables.EDITOR_MODE_EDIT: variables.EDITOR_MODE_ADD;
       this.getEditBlog();
     },
     submitCheck() {
@@ -56,7 +56,7 @@ export default {
     },
     getEditBlog() {
       if (this.mode === 2 && this.pageId) {
-        axios.get(`/page/get?id=${this.pageId}`).then(res => {
+        axios.get(`/page/get/${this.pageId}`).then(res => {
           if (res.data instanceof Array && res.data.length > 0) {
             const data = res.data[0];
             this.title = data.title;
@@ -72,8 +72,8 @@ export default {
     },
     submit() {
       this.submitCheck();
-      const url = this.mode === 1? '/page/add': 'page/update';
-      const method = this.mode === 1? 'post': 'put';
+      const url = this.mode === variables.EDITOR_MODE_ADD? '/page/add': `/page/update/${this.pageId}`;
+      const method = this.mode === variables.EDITOR_MODE_ADD? 'post': 'put';
       axios[method](url, {
         pageId: this.pageId,
         title: this.title,

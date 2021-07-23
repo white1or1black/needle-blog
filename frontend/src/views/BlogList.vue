@@ -30,7 +30,7 @@ export default {
   methods: {
     addPage() {
       checkAuth(null, () => {
-        this.$router.push({name: 'Edit', query: { mode: variables.EDITOR_MODE_ADD }});
+        this.$router.push({name: 'Edit' });
       });
     },
     blogList() {

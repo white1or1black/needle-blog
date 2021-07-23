@@ -1,11 +1,9 @@
 import { JwtAuthGuard } from './../auth/jwt-auth.guard';
-import { PageEntity } from './page.entity';
-import { AddPageDto, PageDto, CheckPageDto, UpdatePageDto } from './page.dto';
+import { AddPageDto, UpdatePageDto, GetPageDto, GetPageResDto, AddPageResDto, UpdatePageResDto } from './page.dto';
 import { PageService } from './page.service';
-import { Express } from 'express';
-import { diskStorage } from 'multer';
+import { diskStorage, Multer } from 'multer';
 import { extname, join } from 'path';
-import { Request, Res, Body, Controller, Post, Get, Put, Delete, Query, UseGuards, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { Request, Res, Body, Controller, Post, Get, Put, Delete, Query, Param, UseGuards, UploadedFile, UseInterceptors, ParseIntPipe } from "@nestjs/common";
 import { FileInterceptor } from '@nestjs/platform-express';
 import * as fs from 'fs';
 
@@ -17,26 +15,25 @@ export class PageController {
 
   @UseGuards(JwtAuthGuard)
   @Post('add')
-  async addPage(@Body() body: AddPageDto): Promise<boolean> {
+  async addPage(@Body() body: AddPageDto): Promise<AddPageResDto> {
     return await this.pageService.addPage(body);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Put('update')
-  async updatePage(@Body() body: UpdatePageDto): Promise<boolean> {
-    return this.pageService.updatePage(body);
+  @Put('update/:id')
+  async updatePage(@Param('id', new ParseIntPipe()) id: number, @Body() body: UpdatePageDto): Promise<UpdatePageResDto> {
+    return this.pageService.updatePage(id, body);
   }
 
-  @Get('get')
-  async getPage(@Query() query:CheckPageDto): Promise<PageEntity[]>{
-    return await this.pageService.getPage(query.id);
+  @Get('get/:id?')
+  async getPage(@Param() param: GetPageDto): Promise<GetPageResDto[]>{
+    return await this.pageService.getPage(param.id);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete('del')
-  async delPage(@Body() body, @Query() query): Promise<boolean> {
-    await this.pageService.delPage(body.pageId);
-    return true;
+  @Delete('del/:id')
+  async delPage(@Param('id', new ParseIntPipe()) id: number): Promise<boolean> {
+    return await this.pageService.delPage(id);
   }
 
   @UseInterceptors(FileInterceptor('file', {
@@ -49,7 +46,7 @@ export class PageController {
   })
 }))
   @Post('upload')
-  async upload(@UploadedFile() file: Express.Multer.File): Promise<any> {
+  async upload(@UploadedFile() file: Multer.File): Promise<any> {
     return file.filename;
   }
   @Get('uploads/*')
