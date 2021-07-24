@@ -1,15 +1,10 @@
 import { PrismaService } from './../prisma/prisma.service';
 import { AddPageDto, UpdatePageDto, GetPageResDto, AddPageResDto, UpdatePageResDto } from './page.dto';
 import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
-import { PageEntity } from "./page.entity";
 
 @Injectable()
 export class PageService {
   constructor(
-    @InjectRepository(PageEntity)
-    private readonly pageRepo: Repository<PageEntity>,
     private readonly prismaService: PrismaService
     ) {}
 

@@ -1,24 +1,24 @@
-import { UserEntity } from './user.entity';
-import { InjectRepository } from '@nestjs/typeorm';
+import { PrismaService } from './../prisma/prisma.service';
 import { Injectable } from "@nestjs/common";
 import { UserDto } from "./user.dto";
-import { Repository } from 'typeorm';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UserService {
   private userList: Array<UserDto>;
   constructor(
-    @InjectRepository(UserEntity)
-    private readonly userRepo:Repository<UserEntity>
+    private readonly prismaService: PrismaService,
   ) {}
 
-  async findUserById(id: number): Promise<UserDto> {
-    return await this.userRepo.findOne(id);
+  async findUserById(id?: number): Promise<any> {
+    return await this.prismaService.user.findUnique({ where: { id } });
   }
 
-  async findUserByName(username: string, columns?: Array<keyof UserEntity>): Promise<UserEntity> {
-    return await this.userRepo.findOne({
-      select: columns,
+  async findUserByName(username: string, columns?: string[]): Promise<any> {
+    const sel = {};
+    for(const col of columns) sel[col] = true;
+    return await this.prismaService.user.findUnique({
+      select: sel,
       where: { username }
     });
   }
@@ -32,9 +32,9 @@ export class UserService {
     return await this.findUserByName(username, ['username']);
   }
 
-  async compNameAndPwd(name: string, password: string): Promise<UserEntity> {
+  async compNameAndPwd(name: string, password: string): Promise<any> {
     const user = await this.findUserByName(name, ['username', 'password']);
-    if (!user || !await UserEntity.comparePassword(password, user.password))
+    if (!user || !this.comparePassword(password, user.password))
       return null
 
     delete user.password;
@@ -47,14 +47,22 @@ export class UserService {
 
   async addUser(username: string, password:string): Promise<boolean> {
     const now = new Date();
-    const newUser = await this.userRepo.create({
+    await this.prismaService.user.create({
+      data: {
         username,
-        password,
+        password: this.encryptPassword(password),
         createdAt: now,
         updatedAt: now
-      });
-
-    await this.userRepo.save( newUser );
+      }
+    })
     return true;
+  }
+
+  comparePassword(pwdBefore: string, pwdLater: string) {
+    return bcrypt.compareSync(pwdBefore, pwdLater);
+  }
+
+  encryptPassword(password) {
+    return bcrypt.hashSync(password, 10);
   }
 }
