@@ -31,7 +31,7 @@ export default {
     addPage() {
       checkAuth(null, () => {
         this.$router.push({name: 'Edit' });
-      });
+      }, this);
     },
     blogList() {
       axios.get('/page/get').then(res => {

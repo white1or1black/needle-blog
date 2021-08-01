@@ -62,7 +62,7 @@ export default {
     editPage() {
       checkAuth(this.pageId, () => {
         this.$router.push({name: 'Edit', params: { id: this.pageId }});
-      });
+      }, this);
     },
     getBlog() {
       if (!this.pageId) {

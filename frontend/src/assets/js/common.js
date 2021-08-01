@@ -1,13 +1,13 @@
 import variables from "./variables";
 import axios from './axios';
 
-export function checkAuth(pageId, cb) {
+export function checkAuth(pageId, cb, that) {
   axios.get(`/auth/check`).then(res => {
     if (res.data === 'success')
       cb();
   }).catch(err => {
     alert(err.message);
-    this.$routeJumpByName('Login');
+    that.$routeJumpByName('Login');
   });
 };
 
