@@ -57,8 +57,8 @@ export default {
     getEditBlog() {
       if (this.mode === 2 && this.pageId) {
         axios.get(`/page/get/${this.pageId}`).then(res => {
-          if (res.data instanceof Array && res.data.length > 0) {
-            const data = res.data[0];
+          if (res.status === 200) {
+            const data = res.data;
             this.title = data.title;
             this.content = data.content;
           }
