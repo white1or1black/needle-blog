@@ -70,7 +70,7 @@ export default {
     .page-title {
       cursor: pointer;
       color: #8181e7;
-      font-size: 2rem;
+      font-size: 1.6rem;
       font-style: oblique;
     }
     .metadata {
