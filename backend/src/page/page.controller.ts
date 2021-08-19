@@ -25,8 +25,13 @@ export class PageController {
     return this.pageService.updatePage(id, body);
   }
 
-  @Get('get/:id?')
-  async getPage(@Param() param: GetPageDto): Promise<GetPageResDto[]>{
+  @Get('get')
+  async getPages(): Promise<GetPageResDto[]> {
+    return this.pageService.getPages();
+  }
+
+  @Get('get/:id')
+  async getPage(@Param() param: GetPageDto): Promise<GetPageResDto>{
     return await this.pageService.getPage(param.id);
   }
 

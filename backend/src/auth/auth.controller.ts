@@ -15,7 +15,7 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get('check')
-  async checkAuth(@Request() req, @Query() query): Promise<any> {
+  async checkAuth(@Request() req, @Query() query): Promise<string> {
     return await this.authService.checkPageAuth(req.user.username, query.pageId);
   }
 }

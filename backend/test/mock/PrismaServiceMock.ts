@@ -16,9 +16,11 @@ export const PrismaServiceMock = {
       }
       return null;
     },
-    findMany: async ({ where }) => {
-      if (where.id) return [originPageInfo];
-      else return originPageInfoList;
+    findFirst: async ({ where }) => {
+      return originPageInfo;
+    },
+    findMany: async ({}) => {
+      return originPageInfoList;
     },
   },
 };

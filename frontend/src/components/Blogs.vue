@@ -6,8 +6,9 @@
         <div @click="goArticle(idx)" class="page-title">
           {{item.title | titleFilter}}
         </div>
-        <div class="page-uptime">
-          {{ item.updatedAt | dateFilter }}
+        <div class="metadata">
+          <span> updated at {{ item.updatedAt | dateFilter }} , &nbsp;</span>
+          <span> {{ item.view }} views </span>
         </div>
         <div class="page-brief">
           <MarkdownViewer :content="item.content | contentFilter" />
@@ -22,6 +23,7 @@
 import axios from '../assets/js/axios';
 import MarkdownViewer from './MarkdownViewer';
 import variables from '../assets/js/variables';
+import { dateFilter } from '../assets/js/filters';
 
 export default {
   name: 'Blogs',
@@ -33,15 +35,13 @@ export default {
     return {};
   },
   filters: {
+    dateFilter,
     titleFilter: function(title) {
       const showLen = 100;
       if (title && title.length > showLen) {
         return title.substr(0, showLen) + ' ...';
       }
       return title;
-    },
-    dateFilter: function(d) {
-      return new Date(d).toLocaleString('en').split(',')[0];
     },
     contentFilter: function(cont) {
       let idx = cont.indexOf('\n');
@@ -73,11 +73,14 @@ export default {
       font-size: 2rem;
       font-style: oblique;
     }
-    .page-uptime {
-      font-size: 1rem;
+    .metadata {
+      margin-left: 1rem;
+      font-size: 0.9rem;
+      font-style: italic;
+      color: #c9944a;
     }
     .page-brief {
-      font-size: 10px !important;
+      font-size: 1.3rem !important;
       background: #f4f4f8;
     }
   }

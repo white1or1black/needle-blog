@@ -8,8 +8,9 @@
     <div class="blog-title">
       {{title}}
     </div>
-    <div>
-      {{updatedAt}}
+    <div class="metadata">
+      <span> updated at {{ updatedAt | dateFilter }}, &nbsp;</span>
+      <span> {{ view }} views </span>
     </div>
     <div class="blog-content">
       <MarkdownViewer :content="content" />
@@ -24,6 +25,7 @@ import MarkdownViewer from '../components/MarkdownViewer';
 import Blogs from '../components/Blogs';
 import variables from '../assets/js/variables';
 import { checkAuth, checkLogin } from '../assets/js/common';
+import { dateFilter } from '../assets/js/filters';
 
 export default {
   name: 'Article',
@@ -31,25 +33,22 @@ export default {
   data() {
     return {
       pageId: null,
+      blogDetail: null,
       title: '',
+      updatedAt: '',
+      view: 0,
       content: '',
-      isLogin: false,
-      updatedAt: null,
     }
   },
   computed: {},
   mounted() {
     this.isLogin = checkLogin();
-    let curBlog = localStorage.getItem(variables.CUR_BLOG_INFO);
-    if (!curBlog) {
-      this.pageId = this.$route.params.id;
-      this.getBlog();
-    } else {
-      curBlog = JSON.parse(curBlog);
-      this.pageId = curBlog.id;
-      this.title = curBlog.title;
-      this.content = curBlog.content;
-    }
+    this.pageId = this.$route.params.id;
+    if (!this.pageId) alert('No article found');
+    this.getBlog();
+  },
+  filters: {
+    dateFilter,
   },
   methods: {
     delPage() {
@@ -70,11 +69,13 @@ export default {
         return;
       }
       axios.get(`/page/get/${this.pageId}`).then(res => {
-        if (res.data instanceof Array && res.data.length > 0) {
-          const data = res.data[0];
-          document.title = data.title;
-          this.title = data.title;
-          this.content = data.content;
+        if (res.status === 200) {
+          this.blogDetail = res.data;
+          document.title = this.blogDetail.title;
+          this.title = this.blogDetail.title;
+          this.updatedAt = this.blogDetail.updatedAt;
+          this.view = this.blogDetail.view;
+          this.content = this.blogDetail.content;
         }
       }).catch(err => {
         alert(err.message);
@@ -103,6 +104,12 @@ export default {
     .blog-title {
       text-align: center;
       font-size: 3rem;
+    }
+    .metadata {
+      text-align: center;
+      font-size: 1rem;
+      font-style: italic;
+      color: #c9944a;
     }
     .blog-content {
       margin: 0 2%;

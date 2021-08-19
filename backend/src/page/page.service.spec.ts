@@ -1,6 +1,7 @@
-import { PrismaService } from './../prisma/prisma.service';
+import { PageViewService } from './pageview.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { PageModule } from './page.module';
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
 import { PageService } from './page.service';
 import { PrismaServiceMock } from '../../test/mock/PrismaServiceMock';
 import { originPageInfoList, originPageInfo, now } from '../../test/mock/PrismaDataMock';
@@ -9,24 +10,43 @@ describe('Page', () => {
   let pageService: PageService;
 
   beforeAll(async () => {
+    const StoreServiceMock = {
+      getClient: () => {
+        return {
+          get: () => {},
+          set: () => {},
+          incr: () => {},
+        }
+      }
+    };
+    const PageViewServiceMock = {
+      incrView: (pageId: number) => 1,
+      getViewCount: (pageId: number) => 1,
+      getViewCounts: (pageId: number) => [1],
+    };
+
     const moduleRef = await Test.createTestingModule({
       imports: [PageModule],
-      providers: [PageService, PrismaService],
+      providers: [PageService, PrismaService, PageViewService],
     })
+      .overrideProvider(PageViewService)
+      .useValue(PageViewServiceMock)
       .overrideProvider(PrismaService)
       .useValue(PrismaServiceMock)
       .compile();
     pageService = moduleRef.get<PageService>(PageService);
   });
 
-  describe('get pages', () => {
-    it('get page list', async () => {
-      expect(await pageService.getPage(null)).toBeInstanceOf(Array);
-    });
-
-    it('get page by id', async () => {
+  describe('Gets page by id.', () => {
+    it('Gets page by id', async () => {
       const id: number = 1;
-      expect(await pageService.getPage(id)).toHaveLength(1);
+      expect(await pageService.getPage(id)).toEqual(originPageInfo);
+    });
+  });
+
+  describe('Gets pages.', () => {
+    it('Gets page list.', async () => {
+      expect(await pageService.getPages()).toEqual(originPageInfoList);
     });
   });
 

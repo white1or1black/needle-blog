@@ -1,7 +1,7 @@
 FROM node:14.16.1-alpine AS devenv
 WORKDIR /app
 COPY package*.json ./
-RUN npm install --dev
+RUN npm install  --registry https://registry.npm.taobao.org/
 COPY . .
 RUN npm run build
 

@@ -1,3 +1,4 @@
+import { PageViewService } from './pageview.service';
 import { PrismaService } from './../prisma/prisma.service';
 import {
   AddPageDto,
@@ -10,7 +11,10 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class PageService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly pageViewService: PageViewService,
+    ) {}
 
   async addPage(blog: AddPageDto): Promise<AddPageResDto> {
     const page = await this.prismaService.page.create({
@@ -19,20 +23,29 @@ export class PageService {
     return page;
   }
 
-  async getPage(id: number): Promise<GetPageResDto[]> {
+  async getPages(): Promise<GetPageResDto[]> {
     const select = { id: true, title: true, content: true, updatedAt: true };
-    if (id) {
-      return await this.prismaService.page.findMany({
-        select,
-        where: { id, status: 1 },
-      });
-    }
-
     const pages = await this.prismaService.page.findMany({
       select,
-      where: { status: 1 },
+      where: { status: 1 }
     });
-    return pages;
+
+    const views = await this.pageViewService.getViewCounts(pages.map(v => v.id));
+    return pages.map((item, idx) => {
+      return {view: views[idx], ...item};
+    });
+  }
+
+  async getPage(id: number): Promise<GetPageResDto> {
+    await this.pageViewService.incrView(id);
+    const select = { id: true, title: true, content: true, updatedAt: true };
+    const pageInfo = await this.prismaService.page.findFirst({
+      select,
+      where: { id, status: 1 }
+    });
+
+    const view = await this.pageViewService.getViewCount(id);
+    return {view, ...pageInfo};
   }
 
   async updatePage(id: number, body: UpdatePageDto): Promise<UpdatePageResDto> {

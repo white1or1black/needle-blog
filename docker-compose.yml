@@ -15,6 +15,12 @@ services:
     build: ./frontend
     ports: 
       - "80:80"
+  redis:
+    image: redis
+    volumes:
+      - "${REDIS_DIR}/config:/usr/local/etc/redis"
+      - "${REDIS_DIR}/data:/data"
+
   backend:
     build: ./backend
     depends_on: 

@@ -11,6 +11,7 @@ export class GetPageDto {
 export class GetPageResDto {
   id: number;
   title: string;
+  view: number;
   content: string;
   updatedAt: Date;
 }

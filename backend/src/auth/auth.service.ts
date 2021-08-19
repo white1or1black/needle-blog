@@ -37,7 +37,6 @@ export class AuthService {
    * @returns 
    */
   async checkPageAuth(username: string, pageId: string): Promise<string> {
-    const user = await this.userService.findBaseUseInfo(username);
-    return username === user.username? 'success': 'failed';
+    return 'success';
   }
 }
