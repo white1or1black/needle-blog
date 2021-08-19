@@ -80,7 +80,7 @@ export default {
       color: #c9944a;
     }
     .page-brief {
-      font-size: 1.3rem !important;
+      font-size: 0.9rem !important;
       background: #f4f4f8;
     }
   }
