@@ -13,7 +13,7 @@ services:
       - .env
   frontend:
     build: ./frontend
-    ports: 
+    ports:
       - "80:80"
   redis:
     image: redis
@@ -23,15 +23,15 @@ services:
 
   backend:
     build: ./backend
-    depends_on: 
+    depends_on:
       - mysql
     restart: always
-    ports: 
+    ports:
       - "3000:3000"
-    volumes: 
+    volumes:
       - ./backend/src:/app/src
       - /app/node_modules
     env_file:
       - .env
-    environment: 
+    environment:
       - PORT=3000

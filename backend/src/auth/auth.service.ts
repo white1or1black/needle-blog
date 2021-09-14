@@ -1,7 +1,7 @@
+import { UserDto } from './../user/user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from './../user/user.service';
 import { Injectable } from "@nestjs/common";
-import { UserEntity } from "../user/user.entity";
 
 @Injectable()
 export class AuthService {
@@ -22,7 +22,7 @@ export class AuthService {
    * @param password 
    * @returns 
    */
-  async localValidate(username: string, password: string): Promise<UserEntity> {
+  async localValidate(username: string, password: string): Promise<UserDto> {
     return await this.userService.compNameAndPwd(username, password);
   }
 

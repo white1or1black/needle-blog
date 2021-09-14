@@ -1,7 +1,12 @@
 version: "3"
-services: 
+services:
+  mysql:
+    ports:
+      - "3306:3306"
+  redis:
+    ports:
+      - "6379:6379"
   backend:
-    environment: 
+    environment:
       - NODE_ENV=development
-    command: 
-      npm run start:prod
+    command: npm run start:prod

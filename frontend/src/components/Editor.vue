@@ -2,7 +2,7 @@
 <div>
   <div>
     <input style="display: none" type="file" ref="image" @change="uploadFile"/>
-    <input type="button" @click="addImg" value="add image">
+    <!-- <input type="button" @click="addImg" value="add image"> -->
   </div>
   <textarea ref="inputArea" class="edit-area" v-model="ct" />
 </div>

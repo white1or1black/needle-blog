@@ -1,11 +1,9 @@
-import { AuthGuard } from '@nestjs/passport';
 import { JwtAuthGuard } from './../src/auth/jwt-auth.guard';
 import { PrismaServiceMock } from './mock/PrismaServiceMock';
-import { originPageInfoList, originPageInfo } from './mock/PrismaDataMock';
 import { PrismaService } from '../src/prisma/prisma.service';
 import { PageModule } from './../src/page/page.module';
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication, Controller, ExecutionContext } from '@nestjs/common';
+import { INestApplication, ExecutionContext } from '@nestjs/common';
 import * as request from 'supertest';
 
 describe('PageController (e2e)', () => {

@@ -1,7 +1,0 @@
-version: "3"
-services: 
-  backend:
-    build: .
-    environment: 
-      - NODE_ENV=production
-    command: sh -c "node ./script/dbInit.js && npm run start:prod"
